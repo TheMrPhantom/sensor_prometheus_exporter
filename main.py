@@ -10,7 +10,6 @@ GPIO.cleanup()
 
 # read data using pin 14
 instance = dht11.DHT11(pin = 14)
-result = instance.read()
 
 sensors=dict()
 sensors['jroom_temp']=prometheus_client.Gauge(
@@ -21,6 +20,9 @@ sensors['jroom_hum']=prometheus_client.Gauge(
 prometheus_client.start_http_server(8002)
 
 while True:
+
+    result = instance.read()
+
     if result.is_valid():
         sensors['jroom_temp'].set(result.temperature)
         sensors['jroom_hum'].set(result.humidity)
